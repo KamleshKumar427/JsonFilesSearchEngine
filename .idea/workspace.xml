@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="04671ed4-4c6f-4385-b4c5-cd1b3ca809b2" name="Changes" comment="pushing till assignment 2" />
+    <list default="true" id="04671ed4-4c6f-4385-b4c5-cd1b3ca809b2" name="Changes" comment="pushing till assignment 2">
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_19_2021_4_11_PM_[Changes]/shelved.patch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_12_19_2021_4_11_PM__Changes_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Generated_files/Doc_ref.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Generated_files/Inv_index.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Generated_files/for_index.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Generated_files/lexicon.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample_data/21stcenturywire.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample_data/annielowrey.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample_data/anonnews.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample_data/anonymous.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample_data/boisestatepublicradio.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample_data/bonginoreport.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sample_data/breaking911.json" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
