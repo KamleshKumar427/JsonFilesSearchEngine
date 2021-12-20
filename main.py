@@ -70,9 +70,9 @@ for file_name in os.listdir():                          # for every file in the 
 
 json.dump(doc_ref, open("../Generated_files/Doc_ref.json",  "w"))  # store doc_ref in file
 
-del doc_ref
+# del doc_ref
 del forwardIndexWords
-del Lex_dict
+# del Lex_dict
 
 Inv_index = {}    # dictionary to store inverted index
 for docID in forwardIndex:    # for every article
@@ -82,8 +82,45 @@ for docID in forwardIndex:    # for every article
         Inv_index[str(wordID)][str(docID)] = forwardIndex[docID][wordID]  # put doc_id and hitlist into the dict of correesponding word
 
 json.dump(Inv_index, open("../Generated_files/Inv_index.json", "w"))     # put inverted index into file
-del Inv_index
+# del Inv_index
 del forwardIndex
 
 end = time.time()
 print(f" Now Runtime of the program is {end - start}")
+
+query = input("Enter your search query: ")
+terms = query.split()
+print(terms)
+
+docs = {}
+docs_list = []
+total_docs = set()
+temp_docs = set()
+number = 0
+
+for word in terms:
+    temp = "".join(c for c in word if c.isalpha() or c == '.')
+    tmp = stemmer.stem(temp.lower())
+    if tmp in Lex_dict:
+        word = Lex_dict[tmp]
+        word_id = int(word)
+        print(word_id)
+        docs = Inv_index[str(word_id)]
+        for doc_id in docs:
+            freq = len(Inv_index[str(word_id)][str(doc_id)])
+            print(str(number) + ". "+ str(freq))
+            number += 1
+            temp_docs.add(doc_id)
+    docs_list.append(copy.copy(temp_docs))
+    temp_docs.clear()
+
+for doc_set in docs_list:
+    total_docs = docs_list[0].intersection(doc_set)
+
+print(total_docs)
+
+for index, doc in enumerate(total_docs):
+    print(str(index) + " " + doc_ref[doc] )
+
+end1 = time.time()
+print(f" Now Runtime of the program is {end1 - end}")
