@@ -6,6 +6,7 @@ import time
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 import re
+from functools import reduce
 
 start = time.time()
 stemmer = SnowballStemmer("english")       # creating stemmer object
@@ -95,32 +96,41 @@ print(terms)
 docs = {}
 docs_list = []
 total_docs = set()
-temp_docs = set()
+temp_docs = {}
 number = 0
 
 for word in terms:
     temp = "".join(c for c in word if c.isalpha() or c == '.')
     tmp = stemmer.stem(temp.lower())
     if tmp in Lex_dict:
-        word = Lex_dict[tmp]
-        word_id = int(word)
+        word_id = int(Lex_dict[tmp])
         print(word_id)
         docs = Inv_index[str(word_id)]
         for doc_id in docs:
             freq = len(Inv_index[str(word_id)][str(doc_id)])
-            print(str(number) + ". "+ str(freq))
+            print(str(number) + ". " + str(freq))
             number += 1
-            temp_docs.add(doc_id)
-    docs_list.append(copy.copy(temp_docs))
+            temp_docs[str(doc_id)] = int(freq)
+    docs_list.append(copy.deepcopy(temp_docs))
     temp_docs.clear()
 
-for doc_set in docs_list:
-    total_docs = docs_list[0].intersection(doc_set)
-
-print(total_docs)
-
-for index, doc in enumerate(total_docs):
-    print(str(index) + " " + doc_ref[doc] )
+for doc_list in docs_list:
+    total_docs = set(docs_list[0].keys()).intersection(set(doc_list.keys()))
+    print(total_docs)
 
 end1 = time.time()
 print(f" Now Runtime of the program is {end1 - end}")
+doc_dict = {}
+freq_sum = 0
+for doc in total_docs:
+    print(doc)
+    freq_sum = sum([x[str(doc)] for x in docs_list if doc in x])
+    doc_dict[str(doc)] = freq_sum
+    freq_sum = 0
+doc_dict = sorted(doc_dict.items(), key=lambda x: -x[1])
+print(doc_dict)
+for index, doc1 in enumerate(doc_dict):
+    print(doc1)
+    print(str(index) + " " + doc_ref[doc1[0]])
+
+
