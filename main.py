@@ -131,9 +131,10 @@ def main():
 
     for doc_id1 in total_docs:
         for element in product(x for x in hitlists[doc_id1]):
-            for num in [y-x for (x, y) in pairwise(element)]:
+            for num in [y-x for (x, y) in pairwise(element[0])]:
                 print(num)
                 if num < 5:
+                    print("here")
                     doc_dict[str(doc_id1)] += 15
 
     doc_dict = sorted(doc_dict.items(), key=lambda x: -x[1])
