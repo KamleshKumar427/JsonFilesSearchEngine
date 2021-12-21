@@ -9,6 +9,7 @@ from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 from re import split
 from os import path
+from itertools import product
 
 
 def main():
@@ -27,18 +28,18 @@ def main():
             objects = items(f, 'item')  # loading only the contents of each article into memory
             for data in objects:  # going through the contents of each article
                 data = data['title'] + data['content']
-                words_list = split(':|;|,|\s|\n|&|\?|\t|-|/|\|@|"|!',
-                                   data)  # splitting the contents into words using multiple delimiters
+                words_list = split(':|;|,|\s|\n|&|\?|\t|-|/|\|@|"|!', data)  # splitting the contents into words using multiple delimiters
                 for word in words_list:  # going through the list of words
-                    temp = "".join(
-                        c for c in word if c.isalpha() or c == '.')  # keeping only the alphabet and . in each word
-                    if temp and len(temp) > 2 and temp.lower() not in stop_words:  # filtering
-                        tmp = stemmer.stem(temp.lower())  # stemming the filtered words.
+                    temp = "".join(c for c in word if c.isalpha() or c == '.')  # keeping only the alphabet and . in each word
+                    temp = copy(temp.lower())
+                    if len(temp) > 2 and temp not in stop_words:  # filtering
+                        tmp = stemmer.stem(temp)  # stemming the filtered words.
                         if tmp not in Lex_dict:  # if the word is not in lexicon
                             Lex_dict[tmp] = word_id  # insert it in lexicon
                             word_id += 1
 
     dump(Lex_dict, open("../Generated_files/lexicon.json", "w"))
+
     end12 = time()
     print(f" Now Runtime of the program is {end12 - start}")
     doc_ref = {}
@@ -53,14 +54,14 @@ def main():
                 forwardIndexWords.clear()
                 for index, word in enumerate(words_list):  # going through the whole list of words
                     temp = "".join(c for c in word if c.isalpha() or c == '.')
-                    if temp and len(temp) > 2 and temp.lower() not in stop_words:
-                        tmp = stemmer.stem(temp.lower())  # stemming the filtered words.
+                    temp = copy(temp.lower())
+                    if len(temp) > 2 and temp not in stop_words:
+                        tmp = stemmer.stem(temp)  # stemming the filtered words.
                         if Lex_dict[tmp] not in forwardIndexWords:
                             forwardIndexWords[Lex_dict[tmp]] = [index]
                         else:
                             forwardIndexWords[Lex_dict[tmp]].append(index)
-                forwardIndex[doc_id] = deepcopy(
-                    forwardIndexWords)  # putting wordids and hitlists for each article into forward index
+                forwardIndex[doc_id] = deepcopy(forwardIndexWords)  # putting wordids and hitlists for each article into forward index
                 doc_id += 1
 
         with open(file_name, "rb") as f:
@@ -101,6 +102,7 @@ def main():
     temp_docs = {}
 
     for word in terms:
+        print(word)
         temp = "".join(c for c in word if c.isalpha() or c == '.')
         tmp = stemmer.stem(temp.lower())
         if tmp in Lex_dict:
@@ -115,11 +117,15 @@ def main():
         docs_list.append(deepcopy(temp_docs))
         temp_docs.clear()
 
-    for doc_list in docs_list:
-        total_docs = set(docs_list[0].keys()).intersection(set(doc_list.keys()))
+    temp_docs[str(doc_id)] += 12
 
+    docs_list = [x.keys() for x in docs_list]
+    
+    print(docs_list)
+    total_docs = copy(set(docs_list[0]).intersection(*docs_list))
+    print(total_docs)
     doc_dict = {}
-    freq_sum = 0
+
     for doc in total_docs:
         freq_sum = sum([x[str(doc)] for x in docs_list])
         doc_dict[str(doc)] = freq_sum
