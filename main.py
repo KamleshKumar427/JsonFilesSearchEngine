@@ -10,7 +10,7 @@ from nltk.stem import SnowballStemmer
 from re import split
 from os import path
 from itertools import product
-
+from itertools import pairwise
 
 def main():
     start = time()
@@ -100,6 +100,7 @@ def main():
     docs_list = []
     total_docs = set()
     temp_docs = {}
+    hitlists = {}
 
     for word in terms:
         print(word)
@@ -110,6 +111,8 @@ def main():
             docs = Inv_index[str(word_id)]
             for doc_id in docs:
                 freq = len(Inv_index[str(word_id)][str(doc_id)])
+                hitlists[doc_id] = []
+                hitlists[doc_id].append(Inv_index[str(word_id)][str(doc_id)])
                 for pos in Inv_index[str(word_id)][str(doc_id)]:
                     if pos < 15:
                         freq += 10
@@ -117,18 +120,21 @@ def main():
         docs_list.append(deepcopy(temp_docs))
         temp_docs.clear()
 
-    temp_docs[str(doc_id)] += 12
+    docs_list1 = [x.keys() for x in docs_list]
 
-    docs_list = [x.keys() for x in docs_list]
-    
-    print(docs_list)
-    total_docs = copy(set(docs_list[0]).intersection(*docs_list))
-    print(total_docs)
+    total_docs = copy(set(docs_list1[0]).intersection(*docs_list1))
     doc_dict = {}
 
     for doc in total_docs:
         freq_sum = sum([x[str(doc)] for x in docs_list])
         doc_dict[str(doc)] = freq_sum
+
+    for doc_id1 in total_docs:
+        for element in product(x for x in hitlists[doc_id1]):
+            for num in [y-x for (x, y) in pairwise(element)]:
+                print(num)
+                if num < 5:
+                    doc_dict[str(doc_id1)] += 15
 
     doc_dict = sorted(doc_dict.items(), key=lambda x: -x[1])
     for index, doc1 in enumerate(doc_dict):
