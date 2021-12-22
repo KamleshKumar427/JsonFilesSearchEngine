@@ -12,7 +12,10 @@ from os import path
 from itertools import product
 from itertools import pairwise
 
+
 def main():
+    # TODO: IF FILE EXISTS
+    # TODO: insertion
     start = time()
 
     stemmer = SnowballStemmer("english")  # creating stemmer object
@@ -142,18 +145,19 @@ def main():
 
     print(doc_dict)
 
-    extra_docs = copy(set(docs_list1[0]).union(*docs_list1))
+    if len(doc_dict) < 20:
+        extra_docs = copy(set(docs_list1[0]).union(*docs_list1))
 
-    extra_docs = extra_docs - set([x for x in doc_dict])
+        extra_docs = extra_docs - set([x for x in doc_dict])
 
-    for index, doc1 in enumerate(extra_docs):
-        print(doc1)
-        print(str(index) + " " + doc_ref[doc1])
+        for index, doc1 in enumerate(extra_docs):
+            print(doc1)
+            print(str(index) + " " + doc_ref[doc1])
 
+# TODO: rank the appended articles
     end1 = time()
     print(f" Now Runtime of the program is {end1 - start1}")
 
 
 if __name__ == "__main__":
     main()
-
