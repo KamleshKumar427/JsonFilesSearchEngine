@@ -132,9 +132,7 @@ def main():
     for doc_id1 in total_docs:
         for element in product(x for x in hitlists[doc_id1]):
             for num in [y-x for (x, y) in pairwise(element[0])]:
-                print(num)
                 if num < 5:
-                    print("here")
                     doc_dict[str(doc_id1)] += 15
 
     doc_dict = sorted(doc_dict.items(), key=lambda x: -x[1])
@@ -142,9 +140,20 @@ def main():
         print(doc1)
         print(str(index) + " " + doc_ref[doc1[0]])
 
+    print(doc_dict)
+
+    extra_docs = copy(set(docs_list1[0]).union(*docs_list1))
+
+    extra_docs = extra_docs - set([x for x in doc_dict])
+
+    for index, doc1 in enumerate(extra_docs):
+        print(doc1)
+        print(str(index) + " " + doc_ref[doc1])
+
     end1 = time()
     print(f" Now Runtime of the program is {end1 - start1}")
 
 
 if __name__ == "__main__":
     main()
+
